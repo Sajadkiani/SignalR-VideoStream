@@ -72,7 +72,7 @@ namespace VideoStreamClient.SignalReader
             var cancellationTokenSource = new CancellationTokenSource();
             await hubConnection.StartAsync();
             var channel = await hubConnection.StreamAsChannelAsync<byte[]>(
-                "Counter", 3000, 4000, cancellationTokenSource.Token);
+                "Counter", cancellationTokenSource.Token);
 
             if(!Directory.Exists(path))
              Directory.CreateDirectory(path);

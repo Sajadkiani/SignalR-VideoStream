@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -13,7 +10,26 @@ namespace VideoStreamServer.Hubs
     public class VideoStreamHub : Hub
     {
         private string path = Directory.GetCurrentDirectory() + "/Videos/Window.mp4";
-        private static int counter = 0;
+        private string pathout = Directory.GetCurrentDirectory() + "/Videos/out.mp4";
+        private static Channel<byte[]> channel;
+        private int sectionSize = 10000;
+        private static FileStream fileStream;
+        private bool starter = false;
+
+        public VideoStreamHub()
+        {
+            fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            channel = Channel.CreateUnbounded<byte[]>();
+        }
+
+        public void CallCounter()
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            _ = Counter(cts.Token);
+
+            starter = true;
+        }
+
         // public async IAsyncEnumerable<int> Counter(
         //         int count,
         //         int delay,
@@ -45,33 +61,29 @@ namespace VideoStreamServer.Hubs
 
 
         public ChannelReader<byte[]> Counter(
-    int count,
-    int delay,
-    CancellationToken cancellationToken)
+            CancellationToken cancellationToken
+         )
         {
-            var channel = Channel.CreateUnbounded<byte[]>();
-
+            // var channel = Channel.CreateUnbounded<byte[]>();
+            if (starter) return channel.Reader;
             // We don't want to await WriteItemsAsync, otherwise we'd end up waiting 
             // for all the items to be written before returning the channel back to
             // the client.
-            _ = WriteItemsAsync(channel.Writer, count, delay, cancellationToken);
+            _ = WriteItemsAsync(channel.Writer, cancellationToken);
 
             return channel.Reader;
         }
 
         private async Task WriteItemsAsync(
             ChannelWriter<byte[]> writer,
-            int count,
-            int delay,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken
+            )
         {
             Exception localException = null;
             try
             {
-                int sectionSize = 5000;
-                // var fileStream = File.Open(path, FileMode.Open);
-                FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
                 // long lenght = fileStream.Length / (1024 * 1024);
+                // var fs=new FileStream(pathout, FileMode.CreateNew, FileAccess.Write);
                 long lenght = fileStream.Length;
                 for (int i = 0; i < lenght; i = i + sectionSize)
                 {
@@ -95,12 +107,14 @@ namespace VideoStreamServer.Hubs
                         _ = await fileStream.ReadAsync(buffer, 0, sectionSize);
 
                         await writer.WriteAsync(buffer, cancellationToken);
+                        // await fs.WriteAsync(buffer,0,sectionSize);
                     }
                     // yield return buffer;
 
                     // Use the cancellationToken in other APIs that accept cancellation
                     // tokens so the cancellation can flow down to them.
                     await Task.Delay(1, cancellationToken);
+                    Console.WriteLine("doing..");
                 }
 
 
@@ -112,6 +126,7 @@ namespace VideoStreamServer.Hubs
                 //     // tokens so the cancellation can flow down to them.
                 //     await Task.Delay(delay, cancellationToken);
                 // }
+                Console.WriteLine("Send complete.");
             }
             catch (Exception ex)
             {

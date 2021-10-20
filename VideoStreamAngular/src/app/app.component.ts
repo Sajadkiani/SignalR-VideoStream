@@ -13,6 +13,9 @@ export class AppComponent {
     .withUrl("http://localhost:5000/streamHub")
     .build();
 
+  private index: number = 0;
+  base64Bytes:string=""; 
+
   ngOnInit() {
     debugger
     this.connection.start().then(res => {
@@ -23,12 +26,10 @@ export class AppComponent {
   }
 
   GetData() {
-    this.connection.stream("Counter", 100, 500).subscribe({
+    this.connection.stream("Counter").subscribe({
       next: (item) => {
-        var span = document.createElement("li");
-        span.style.border="1px solid lightgray";
-        span.textContent = item;
-        document.getElementById("messagesList").appendChild(span);
+        // if (this.index < 30)
+        //   this.base64Bytes += item;
       },
       complete: () => {
         var li = document.createElement("li");
@@ -41,5 +42,5 @@ export class AppComponent {
         document.getElementById("messagesList").appendChild(li);
       },
     });
-  }
+  }  
 }
