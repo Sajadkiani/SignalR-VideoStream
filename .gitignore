@@ -36,3 +36,7 @@ VideoStreamClient/bin/Debug/netcoreapp3.1/VideoStreamClient.pdb
 VideoStreamClient/bin/Debug/netcoreapp3.1/VideoStreamClient.runtimeconfig.dev.json
 VideoStreamClient/bin/Debug/netcoreapp3.1/VideoStreamClient.runtimeconfig.json
 VideoStreamClient/bin/Debug/netcoreapp3.1/Properties/launchSettings.json
+VideoStreamClient/ReciveFiles/recived.mp4
+VideoStreamServer/Videos/Window.mp4
+VideoStreamServer/Videos/Window1.bak
+VideoStreamServer/Videos/Window2.bak

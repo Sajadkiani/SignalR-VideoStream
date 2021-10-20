@@ -696,11 +696,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamClient\\VideoStreamClient.csproj",
+      "projectUniqueName": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamClient\\VideoStreamClient.csproj",
       "projectName": "VideoStreamClient",
-      "projectPath": "c:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamClient\\VideoStreamClient.csproj",
+      "projectPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamClient\\VideoStreamClient.csproj",
       "packagesPath": "C:\\Users\\s.kiani\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamClient\\obj\\",
+      "outputPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamClient\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

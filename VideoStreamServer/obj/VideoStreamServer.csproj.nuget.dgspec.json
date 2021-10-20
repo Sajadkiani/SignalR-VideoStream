@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamServer\\VideoStreamServer.csproj": {}
+    "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\VideoStreamServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamServer\\VideoStreamServer.csproj": {
+    "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\VideoStreamServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamServer\\VideoStreamServer.csproj",
+        "projectUniqueName": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\VideoStreamServer.csproj",
         "projectName": "VideoStreamServer",
-        "projectPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamServer\\VideoStreamServer.csproj",
+        "projectPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\VideoStreamServer.csproj",
         "packagesPath": "C:\\Users\\s.kiani\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\VideoStreamServer\\obj\\",
+        "outputPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

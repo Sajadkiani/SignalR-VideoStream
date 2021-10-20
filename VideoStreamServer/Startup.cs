@@ -29,7 +29,7 @@ namespace VideoStreamServer
             services.AddCors(options =>
                 {
                     options.AddPolicy("CorsPolicy", builder => builder
-                    .WithOrigins("http://localhost:5004")
+                    .WithOrigins("http://localhost:5004","http://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
