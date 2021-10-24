@@ -1,41 +1,63 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "MediaToolkit/1.1.0.1": {
+      "sha512": "R3u+udQOUDBGUzx4wOHsp6yiSLMdJle7a9E7JK4/btL4w/pdXAmNHP2JMe2Fpt35kLjKNE74oNKUM1hc6RceIA==",
+      "type": "package",
+      "path": "mediatoolkit/1.1.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/readme.txt",
+        "lib/net20/MediaToolkit.dll",
+        "lib/net40/MediaToolkit.dll",
+        "mediatoolkit.1.1.0.1.nupkg.sha512",
+        "mediatoolkit.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "MediaToolkit >= 1.1.0.1"
+    ]
   },
   "packageFolders": {
-    "C:\\Users\\s.kiani\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/home/kian/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\VideoStreamServer.csproj",
+      "projectUniqueName": "/home/kian/Desktop/Sanka/SankaTv/SignalR-VideoStream/VideoStreamServer/VideoStreamServer.csproj",
       "projectName": "VideoStreamServer",
-      "projectPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\VideoStreamServer.csproj",
-      "packagesPath": "C:\\Users\\s.kiani\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\s.kiani\\Desktop\\SanakTv\\VideoStream\\SignalR-VideoStream\\VideoStreamServer\\obj\\",
+      "projectPath": "/home/kian/Desktop/Sanka/SankaTv/SignalR-VideoStream/VideoStreamServer/VideoStreamServer.csproj",
+      "packagesPath": "/home/kian/.nuget/packages/",
+      "outputPath": "/home/kian/Desktop/Sanka/SankaTv/SignalR-VideoStream/VideoStreamServer/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\s.kiani\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/kian/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -47,6 +69,13 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "MediaToolkit": {
+            "target": "Package",
+            "version": "[1.1.0.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -65,8 +94,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MediaToolkit 1.1.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "MediaToolkit",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

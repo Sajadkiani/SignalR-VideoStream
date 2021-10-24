@@ -105,5 +105,8 @@
       }
     }
   },
-  "defaultProject": "VideoStreamAngular"
+  "defaultProject": "VideoStreamAngular",
+  "cli": {
+    "analytics": "1c499bb2-c33e-4914-89c2-128c2877d54d"
+  }
 }
