@@ -193,17 +193,18 @@ namespace VideoStreamServer.Hubs
         {
             // var size = 10000;      
             string strBytes = string.Empty;
-            const int chunkSize = 1024*1024; // read the file by chunks of 1KB
-            var fs = new FileStream(pathout, FileMode.CreateNew, FileAccess.Write);
+            const int chunkSize = 30000; // read the file by chunks of 1KB
+            // var fs = new FileStream(pathout, FileMode.CreateNew, FileAccess.Write);
             using (var file = File.OpenRead(path))
             {
-
                 var buffer1 = new byte[file.Length];
-                int readed = file.Read(buffer1, 0, buffer1.Length);
-                strBytes = Convert.ToBase64String(buffer1);
-                await writer.WriteAsync(strBytes);
-                return;
+                var file1 = File.OpenRead(path);
+                int readed = file1.Read(buffer1, 0, buffer1.Length);
+                var str = Convert.ToBase64String(buffer1);
+                await writer.WriteAsync(str);
+                // return;
                 
+                string str1="";
                 int bytesRead;
                 var count=Math.Ceiling((decimal)file.Length/chunkSize); 
                 for (int i = 1; i <= count; i++)
@@ -213,21 +214,27 @@ namespace VideoStreamServer.Hubs
                         var buffer = new byte[chunkSize];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         strBytes = Convert.ToBase64String(buffer);
+                        str1=str1+strBytes;
                         await writer.WriteAsync(strBytes);
-                        var t = Convert.FromBase64String(strBytes);
-                        fs.Write(t, 0, bytesRead);
+                        // var t = Convert.FromBase64String(strBytes);
+                        // fs.Write(t, 0, bytesRead);
                     }
                     else
                     {
-                        var remain = file.Length - ((i - 1) * chunkSize);
+                        var remain = file.Length - ((i - 1) * chunkSize)+1;
                         var buffer = new byte[remain];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         strBytes = Convert.ToBase64String(buffer);
-                        await writer.WriteAsync(strBytes);
-                        var t = Convert.FromBase64String(strBytes);
-                        fs.Write(t, 0, bytesRead);
+                        str1=str1+strBytes;
+                        await writer.WriteAsync((strBytes+""));
+                        // var t = Convert.FromBase64String(strBytes);
+                        // fs.Write(t, 0, bytesRead);
                     }
-                    
+                }
+
+                if(str==(str1+"="))
+                {
+                    int x=0;
                 }
 
                 // while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0)

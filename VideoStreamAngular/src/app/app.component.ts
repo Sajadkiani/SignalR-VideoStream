@@ -48,7 +48,7 @@ export class AppComponent {
         videoTag.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
         console.log(this.base64Bytes);
         // videoTag.play();
-        let inp=document.getElementById("elbytes");
+        // let inp=document.getElementById("elbytes");
         // inp.setAttribute("value",this.base64Bytes);
       },
       error: (err) => {
