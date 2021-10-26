@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using System.Collections.Generic;
+using FFmpeg.NET;
 
 namespace VideoStreamServer.Hubs
 {
@@ -161,7 +161,7 @@ namespace VideoStreamServer.Hubs
                 if (File.Exists(pathout))
                     File.Delete(pathout);
                 // var fs = new FileStream(pathout, FileMode.CreateNew, FileAccess.Write);
-                  await ReadChunks(path,writer);
+                  await ReadChunkss(path,writer,cancellationToken);
                 // for (var i = 0; i < count; i++)
                 // {
                 //     await writer.WriteAsync(i, cancellationToken);
@@ -188,6 +188,46 @@ namespace VideoStreamServer.Hubs
             }
         }
 
+        public async Task ReadChunkss(string path, ChannelWriter<string> writer, CancellationToken cancellationToken)
+        {
+            var inputFile = new MediaFile(path);
+            var outputFile = new MediaFile(pathout);
+            int chunkSize=300; //5 minute
+            int startPosition=0;
+            var ffmpeg = new Engine("D:/ffmpeg/bin/ffmpeg.exe");
+            var options = new ConversionOptions();
+            var metadata = await ffmpeg.GetMetaDataAsync(inputFile);
+            var duration=metadata.Duration.TotalSeconds;
+            RemoveOutPutFile();
+            
+            while (startPosition < duration)
+            {
+                options.CutMedia(TimeSpan.FromSeconds(startPosition), TimeSpan.FromSeconds(chunkSize));
+                await ffmpeg.ConvertAsync(inputFile, outputFile, options);
+
+                using(var file = File.OpenRead(pathout))
+                {
+                    var buffer = new byte[chunkSize];
+                    int readed = file.Read(buffer, 0, buffer.Length);
+                    var base64File = Convert.ToBase64String(buffer);
+                    await writer.WriteAsync(base64File);
+                    // RemoveOutPutFile();
+                }
+
+                startPosition = startPosition + chunkSize;
+                // await Task.Delay(2000, cancellationToken);
+            }
+            // This example will create a 25 second video, starting from the 
+            // 30th second of the original video.
+            //// First parameter requests the starting frame to cut the media from.
+            //// Second parameter requests how long to cut the video.
+        }
+
+        private void RemoveOutPutFile()
+        {
+            if (File.Exists(pathout))
+                File.Delete(pathout);
+        }
 
         public async Task ReadChunks(string path, ChannelWriter<string> writer)
         {

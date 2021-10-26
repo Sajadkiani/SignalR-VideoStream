@@ -37,16 +37,25 @@ export class AppComponent {
         // // if (this.index < 20)
         // // {
         this.base64Bytes = this.base64Bytes + item;
-
+        let videoTag = document.getElementById("videoEl");
+        let source = document.createElement("source");
+        source.setAttribute("type", "video/mp4");
+        source.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
+        videoTag.appendChild(source);
         // // }
         // this.index++;
       },
       complete: () => {
         // var blob=atob(this.base64Bytes);
         // let url = URL.createObjectURL(blob);
-        let videoTag:any = document.getElementById("videoEl");
-        videoTag.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
-        console.log(this.base64Bytes);
+        // let videoTag = document.getElementById("videoEl");
+
+        // let source = document.createElement("source");
+        // source.setAttribute("type", "video/mp4");
+        // source.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
+        // videoTag.appendChild(source);
+        // // videoTag.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
+        // console.log(this.base64Bytes);
         // videoTag.play();
         // let inp=document.getElementById("elbytes");
         // inp.setAttribute("value",this.base64Bytes);
