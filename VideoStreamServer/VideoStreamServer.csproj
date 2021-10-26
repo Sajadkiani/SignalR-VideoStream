@@ -5,7 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xFFmpeg.NET" Version="3.4.0" />
   </ItemGroup>
 
 
