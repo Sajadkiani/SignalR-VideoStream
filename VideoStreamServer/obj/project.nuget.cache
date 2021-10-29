@@ -1,21 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "rbIlRbh6x+Uozittjob9OOee5tQsoz9pzmke5TqGrPY4fVnggiJmTSt9xeoynif+oCzg8GMO2RiAO/fYyhFPdQ==",
+  "dgSpecHash": "hCs4shyizjCQ4J3B9kqhe3uDk6UMj4ZRNF1EkVmdUSux1YxXin6P1mCIJMys823F7HEettQdfOFnT5od9HLfIA==",
   "success": true,
   "projectFilePath": "/home/kian/Desktop/Sanka/SankaTv/SignalR-VideoStream/VideoStreamServer/VideoStreamServer.csproj",
   "expectedPackageFiles": [
-    "/home/kian/.nuget/packages/mediatoolkit/1.1.0.1/mediatoolkit.1.1.0.1.nupkg.sha512"
+    "/home/kian/.nuget/packages/xffmpeg.net/3.4.0/xffmpeg.net.3.4.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'MediaToolkit 1.1.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
-      "libraryId": "MediaToolkit",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v3.1"
-      ]
-    }
-  ]
+  "logs": []
 }

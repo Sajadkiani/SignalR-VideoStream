@@ -16,7 +16,7 @@ namespace VideoStreamServer.Hubs
         private static Channel<string> channel;
         private int sectionSize = 10000;
         private static FileStream fileStream;
-        private bool starter = false;
+        private static bool starter = false;
 
         public VideoStreamHub()
         {
@@ -24,7 +24,7 @@ namespace VideoStreamServer.Hubs
             channel = Channel.CreateUnbounded<string>();
         }
 
-        public void CallCounter()
+        public async void CallCounter()
         {
             CancellationTokenSource cts = new CancellationTokenSource();
             _ = Counter(cts.Token);
@@ -32,7 +32,91 @@ namespace VideoStreamServer.Hubs
             starter = true;
         }
 
-        // public async IAsyncEnumerable<int> Counter(
+
+        public async Task<ChannelReader<string>> Counter(
+            CancellationToken cancellationToken
+         )
+        {
+
+            if (starter) return channel.Reader;
+
+            Exception localException = null;
+            try
+            {
+                if (File.Exists(pathout))
+                    File.Delete(pathout);
+                    
+                var inputFile = new MediaFile(path);
+                var outputFile = new MediaFile(pathout);
+                int chunkSize = 60; //5 minute
+                int startPosition = 0;
+                var ffmpeg = new Engine("/usr/bin/ffmpeg");
+                var options = new ConversionOptions();
+                var metadata = await ffmpeg.GetMetaDataAsync(inputFile);
+                var duration = metadata.Duration.TotalSeconds;
+                RemoveOutPutFile();
+
+                while (startPosition < duration)
+                {
+                    options.CutMedia(TimeSpan.FromSeconds(startPosition), TimeSpan.FromSeconds(chunkSize));
+                    await ffmpeg.ConvertAsync(inputFile, outputFile, options);
+
+                    using (var file = File.OpenRead(pathout))
+                    {
+                        var buffer = new byte[file.Length];
+                        int readed = file.Read(buffer, 0, buffer.Length);
+                        var base64File = Convert.ToBase64String(buffer);
+                        await channel.Writer.WriteAsync(base64File);
+                        // RemoveOutPutFile();
+                    }
+
+                    startPosition = startPosition + chunkSize;
+                    await Task.Delay(2000, cancellationToken);
+                }
+                Console.WriteLine("Send complete.");
+            }
+            catch (Exception ex)
+            {
+                localException = ex;
+            }
+            finally
+            {
+                channel.Writer.Complete(localException);
+            }
+
+
+            return channel.Reader;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // public async IAsyncEnumerable<int> Counter(
         //         int count,
         //         int delay,
         //         [EnumeratorCancellation]
@@ -61,20 +145,6 @@ namespace VideoStreamServer.Hubs
         //     // }
         // }
 
-
-        public ChannelReader<string> Counter(
-            CancellationToken cancellationToken
-         )
-        {
-            // var channel = Channel.CreateUnbounded<byte[]>();
-            if (starter) return channel.Reader;
-            // We don't want to await WriteItemsAsync, otherwise we'd end up waiting 
-            // for all the items to be written before returning the channel back to
-            // the client.
-            _ = WriteItemsAsync(channel.Writer, cancellationToken);
-
-            return channel.Reader;
-        }
 
         // private async Task WriteItemsAsync(
         //     ChannelWriter<byte[]> writer,
@@ -192,9 +262,9 @@ namespace VideoStreamServer.Hubs
         {
             var inputFile = new MediaFile(path);
             var outputFile = new MediaFile(pathout);
-            int chunkSize=300; //5 minute
+            int chunkSize=60; //5 minute
             int startPosition=0;
-            var ffmpeg = new Engine("D:/ffmpeg/bin/ffmpeg.exe");
+            var ffmpeg = new Engine("/usr/bin/ffmpeg");
             var options = new ConversionOptions();
             var metadata = await ffmpeg.GetMetaDataAsync(inputFile);
             var duration=metadata.Duration.TotalSeconds;
@@ -207,15 +277,18 @@ namespace VideoStreamServer.Hubs
 
                 using(var file = File.OpenRead(pathout))
                 {
-                    var buffer = new byte[chunkSize];
+                    var buffer = new byte[file.Length];
                     int readed = file.Read(buffer, 0, buffer.Length);
                     var base64File = Convert.ToBase64String(buffer);
                     await writer.WriteAsync(base64File);
                     // RemoveOutPutFile();
                 }
 
+                // if((startPosition + chunkSize) > duration)
+
+                // else
                 startPosition = startPosition + chunkSize;
-                // await Task.Delay(2000, cancellationToken);
+                await Task.Delay(2000, cancellationToken);
             }
             // This example will create a 25 second video, starting from the 
             // 30th second of the original video.
