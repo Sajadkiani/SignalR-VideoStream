@@ -24,8 +24,8 @@ namespace VideoStreamServer
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-                  var hub= new VideoStreamHub();
-            hub.CallCounter();
+            //       var hub= new VideoStreamHub();
+            // hub.CallCounter();
 
             return buider;
         }
