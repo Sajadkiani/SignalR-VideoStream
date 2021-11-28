@@ -12,9 +12,9 @@ export class AppComponent implements AfterViewInit{
   title = 'VideoStreamAngular';
   @ViewChild('videoTag') videoEl:ElementRef; 
   connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:5000/streamHub")
+    .withUrl("http://localhost:5000/hub/eduTv")
     .build();
-
+  
   videoSource = new Array<string>();
   private i: number = 0;
   base64Bytes = '';
@@ -42,6 +42,7 @@ export class AppComponent implements AfterViewInit{
   ) {
 
     // elementRef.nativeElement.querySelector('videoPlayer').addEventListener('ended', this.myHandler, false);
+    // this.connection.start();
 
   }
 
@@ -66,9 +67,13 @@ export class AppComponent implements AfterViewInit{
      
   // });
 
-    this.connection.stream("Counter").subscribe({
+    this.connection.stream("GetVideoStreamAsync").subscribe({
       next: (item) => {
+        debugger
         this.videoSource.push(item);
+        const element:any = document.getElementById("videoPlayer");
+        // if(this.i>0 && (element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)==false) return;
+
         if(this.i>0) return;
 
         this.myHandler(); 

@@ -73,6 +73,7 @@ namespace VideoStreamServer.Hubs
                     startPosition = startPosition + chunkSize;
                     await Task.Delay(2000, cancellationToken);
                 }
+                
                 Console.WriteLine("Send complete.");
             }
             catch (Exception ex)
