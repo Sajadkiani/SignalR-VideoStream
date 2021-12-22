@@ -2,6 +2,7 @@ import { ViewChild } from '@angular/core';
 import { AfterViewInit, Component, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as signalR from "@microsoft/signalr";
+var stop=true;
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements AfterViewInit{
   title = 'VideoStreamAngular';
   @ViewChild('videoTag') videoEl:ElementRef; 
   connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:5000/hub/eduTv")
+    .withUrl("https://localhost:5001/hub/eduTv")
     .build();
   
   videoSource = new Array<string>();
@@ -53,6 +54,7 @@ export class AppComponent implements AfterViewInit{
       // Do something with 'event'
       this.myHandler();
    })
+
     // this.videoEl.nativeElement.addEventListener('ended', 
     // this.myHandler.bind(this));
   }
@@ -72,9 +74,9 @@ export class AppComponent implements AfterViewInit{
         debugger
         this.videoSource.push(item);
         const element:any = document.getElementById("videoPlayer");
-        // if(this.i>0 && (element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)==false) return;
+        if(element.currentTime > 0 &&  element.ended==false) return;
 
-        if(this.i>0) return;
+        // if(this.i>0 || (stop==false)) return;
 
         this.myHandler(); 
         // // if (this.index < 20)
@@ -124,6 +126,9 @@ videoPlay(videoNum) {
   element.setAttribute("src","data:video/mp4;base64,"+this.videoSource[videoNum]);
   element.autoplay = true;
   element.load();
+
+  stop = true;
+  this.videoSource[videoNum]="";
 }
 
 myHandler() {
@@ -134,6 +139,7 @@ myHandler() {
     this.videoPlay(this.i);
   }
   this.i++;
+  stop = false;
 }
 
 ensureVideoPlays() {
