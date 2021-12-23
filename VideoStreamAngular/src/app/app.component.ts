@@ -13,21 +13,20 @@ export class AppComponent implements AfterViewInit{
   title = 'VideoStreamAngular';
   @ViewChild('videoTag') videoEl:ElementRef; 
   connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:5001/hub/eduTv")
+  .withAutomaticReconnect()
+    .withUrl("http://localhost:5000/hub/eduTv")
+    // .withUrl("https://main-srv-eagri.maj.ir/hub/eduTv")
     .build();
   
+
   videoSource = new Array<string>();
   private i: number = 0;
   base64Bytes = '';
 
   ngOnInit() {
     debugger
-    this.connection.start().then(res => {
-      this.GetData();
-    }).catch(err => {
-      console.log(err);
-    });
-
+    
+    this.connect();
     // // let element:any=document.getElementById('videoPlayer').addEventListener('ended', this.myHandler, false);
     // let element:any=document.getElementById('videoPlayer');
     // element.onended=function (params) {
@@ -36,6 +35,27 @@ export class AppComponent implements AfterViewInit{
 
     // this.ensureVideoPlays(); // play the video automatically
   }
+
+  connect()
+  {
+    // this.connection.serverTimeoutInMilliseconds=100000000;
+    // this.connection.onreconnecting=function(){
+    //   console.log("reconnecting ....")
+    // }
+
+    // this.connection.onreconnected=function(){
+    //   console.log("reconnected !!")
+    // }
+
+    // this.connection.keepAliveIntervalInMilliseconds = 100000;
+    this.connection.start().then(res => {
+      this.GetVideo();
+    }).catch(err => {
+      console.log(err);
+    });
+    
+  }
+
   constructor(
     private sanitizer: DomSanitizer,
     // private elementRef: ElementRef,
@@ -45,6 +65,19 @@ export class AppComponent implements AfterViewInit{
     // elementRef.nativeElement.querySelector('videoPlayer').addEventListener('ended', this.myHandler, false);
     // this.connection.start();
 
+  }
+
+  public GetVideo = () => {
+    this.connection.on('GetVideoStreamAsync', (data: string) => {
+      debugger
+      this.videoSource.push(data);
+      const element:any = document.getElementById("videoPlayer");
+      if(element.currentTime > 0 &&  element.ended==false) return;
+
+      // if(this.i>0 || (stop==false)) return;
+
+      this.myHandler(); 
+    });
   }
 
   ngAfterViewInit() {
@@ -59,61 +92,60 @@ export class AppComponent implements AfterViewInit{
     // this.myHandler.bind(this));
   }
 
-  GetData() {
+  // GetData() {
 
-  //   this.connection.on('GetChunck', (file) => {
-  //     this.videoSource.push(file);
-  //     if(this.i>0) return;
+  //   //   this.connection.on('GetChunck', (file) => {
+  //   //     this.videoSource.push(file);
+  //   //     if(this.i>0) return;
 
-  //     this.myHandler(); 
-     
-  // });
+  //   //     this.myHandler(); 
 
-    this.connection.stream("GetVideoStreamAsync").subscribe({
-      next: (item) => {
-        debugger
-        this.videoSource.push(item);
-        const element:any = document.getElementById("videoPlayer");
-        if(element.currentTime > 0 &&  element.ended==false) return;
+  //   // });
 
-        // if(this.i>0 || (stop==false)) return;
+  //   this.connection.stream("GetVideoStreamAsync").subscribe({
+  //     next: (item) => {
+  //       debugger
+  //       this.videoSource.push(item);
+  //       const element: any = document.getElementById("videoPlayer");
+  //       if (element.currentTime > 0 && element.ended == false) return;
 
-        this.myHandler(); 
-        // // if (this.index < 20)
-        // // {
-        // this.base64Bytes = this.base64Bytes + item;
-        // let videoTag: any = document.getElementById("videoEl");
-        // let source = document.createElement("source");
-        // source.setAttribute("type", "video/mp4");
-        // source.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
-        // videoTag.appendChild(source);
-        // videoTag.load();
-        // videoTag.play();
-        // // }
-        // this.index++;
-      },
-      complete: () => {
-        // var blob=atob(this.base64Bytes);
-        // let url = URL.createObjectURL(blob);
-        // let videoTag = document.getElementById("videoEl");
+  //       // if(this.i>0 || (stop==false)) return;
 
-        // let source = document.createElement("source");
-        // source.setAttribute("type", "video/mp4");
-        // source.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
-        // videoTag.appendChild(source);
-        // // videoTag.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
-        // console.log(this.base64Bytes);
-        // videoTag.play();
-        // let inp=document.getElementById("elbytes");
-        // inp.setAttribute("value",this.base64Bytes);
-      },
-      error: (err) => {
-        var li = document.createElement("li");
-        li.textContent = err;
-        document.getElementById("messagesList").appendChild(li);
-      },
-    });
-  }
+  //       this.myHandler();
+  //       // // if (this.index < 20)
+  //       // // {
+  //       // this.base64Bytes = this.base64Bytes + item;
+  //       // let videoTag: any = document.getElementById("videoEl");
+  //       // let source = document.createElement("source");
+  //       // source.setAttribute("type", "video/mp4");
+  //       // source.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
+  //       // videoTag.appendChild(source);
+  //       // videoTag.load();
+  //       // videoTag.play();
+  //       // // }
+  //       // this.index++;
+  //     },
+  //     complete: () => {
+  //       // var blob=atob(this.base64Bytes);
+  //       // let url = URL.createObjectURL(blob);
+  //       // let videoTag = document.getElementById("videoEl");
+
+  //       // let source = document.createElement("source");
+  //       // source.setAttribute("type", "video/mp4");
+  //       // source.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
+  //       // videoTag.appendChild(source);
+  //       // // videoTag.setAttribute("src", "data:video/mp4;base64," + this.base64Bytes);
+  //       // console.log(this.base64Bytes);
+  //       // videoTag.play();
+  //       // let inp=document.getElementById("elbytes");
+  //       // inp.setAttribute("value",this.base64Bytes);
+  //     },
+  //     error: (err) => {
+  //       debugger
+  //       // this.connect();
+  //     },
+  //   });
+  // }
 
 
 // videoSource[0] = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
